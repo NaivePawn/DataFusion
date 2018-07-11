@@ -1,8 +1,10 @@
 package com.iip.datafusion.backend.parser;
 
 import com.iip.datafusion.backend.job.accuracy.UpdateAccuracyJob;
+import com.iip.datafusion.dgs.model.accuracy.KeyValue;
 import com.iip.datafusion.dgs.model.accuracy.UpdateAccuracyConfiguration;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +13,8 @@ public class UpdateAccuracyParser implements Parser {
 
     public static UpdateAccuracyJob parser(UpdateAccuracyConfiguration updateAccuracyConfiguration) throws Exception{
 
-        List<Map<String,String>> attributeValues = updateAccuracyConfiguration.getAttributeValues();
-        List<Map<String,String>> newValues = updateAccuracyConfiguration.getNewValues();
+        List<List<KeyValue>> attributeValues = updateAccuracyConfiguration.getAttributeValues();
+        List<KeyValue> newValues = updateAccuracyConfiguration.getNewValues();
 
         List<String> sqlList = new ArrayList<>();
 
@@ -26,29 +28,27 @@ public class UpdateAccuracyParser implements Parser {
 
         for(int i = 0;i < attributeValues.size();i++){
 
-            Map<String,String> newValue = newValues.get(i);
-            String columnName = "";
-            String value = "";
-            for(String key : newValue.keySet()){
-                columnName = key.substring(3,key.length());
-                value = newValue.get(key);
-            }
+            KeyValue newValue = newValues.get(i);
+            String columnName = newValue.getKey().substring(4,newValue.getKey().length());
+            String columnValue = newValue.getValue();
 
-            Map<String,String> attributeValue = attributeValues.get(i);
-            if(attributeValue.containsKey(columnName)){
-                attributeValue.put(columnName,value);
-            }
-            else{
-                throw new Exception("字段不存在");
+            List<KeyValue> attributeValue = attributeValues.get(i);
+            for(int j = 0;j < attributeValue.size();j++){
+                if(attributeValue.get(j).getKey().equals(columnName)){
+                    attributeValue.get(j).setValue(columnValue);
+                    break;
+                }
             }
 
             String columnClause = "(";
             String valueClause = "(";
 
-            for(String key : attributeValue.keySet()){
+            for(int j = 0;j < attributeValue.size();j++){
+                String key = attributeValue.get(j).getKey();
+                String value = attributeValue.get(j).getValue();
                 if (key != null && key.trim() != "") {
                     columnClause += key + ",";
-                    valueClause += attributeValue.get(key) + ",";
+                    valueClause += value + ",";
                 }
                 else{
                     throw new Exception("属性不能为空");
@@ -61,6 +61,7 @@ public class UpdateAccuracyParser implements Parser {
             valueClause += ");";
 
             String sql = String.format("REPLACE INTO %s %s VALUES %s",updateAccuracyConfiguration.getTableName(),columnClause,valueClause);
+            System.out.println(sql);
             sqlList.add(sql);
         }
 

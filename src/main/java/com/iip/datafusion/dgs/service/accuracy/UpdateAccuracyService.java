@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateAccuracyService {
-    public void commitJob(UpdateAccuracyConfiguration updateAccuracyConfiguration,int userID){
+    public void commitJob(UpdateAccuracyConfiguration updateAccuracyConfiguration,int userID) throws Exception{
         UpdateAccuracyJob updateAccuracyJob = UpdateAccuracyParser.parser(updateAccuracyConfiguration);
-        updateAccuracyJob.setJobType(JobType.ACCURACY);
+        updateAccuracyJob.setJobType(JobType.UPDATEACCURACY);
         updateAccuracyJob.setUserID(userID);
         JobRegistry.getInstance().regist(updateAccuracyJob);
         UpdateAccuracyManager.getInstance().commitJob(updateAccuracyJob);

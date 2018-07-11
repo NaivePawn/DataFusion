@@ -16,16 +16,16 @@ public class UpdateAccuracyConfiguration implements Configuration {
     private String tableName;
 
     @JsonProperty("attributeValues")
-    private List<Map<String,String>> attributeValues;
+    private List<List<KeyValue>> attributeValues;
 
     @JsonProperty("newValues")
-    private List<Map<String,String>> newValues;
+    private List<KeyValue> newValues;
 
     @JsonCreator
     public UpdateAccuracyConfiguration(@JsonProperty("dataSourceId") String dataSourceId,
                                  @JsonProperty("tableName") String tableName,
-                                 @JsonProperty("paramStrings") List<Map<String,String>> attributeValues,
-                                 @JsonProperty("newValues") List<Map<String,String>> newValues){
+                                 @JsonProperty("paramStrings") List<List<KeyValue>> attributeValues,
+                                 @JsonProperty("newValues") List<KeyValue> newValues){
         this.dataSourceId = dataSourceId;
         this.tableName = tableName;
         this.attributeValues = attributeValues;
@@ -48,19 +48,19 @@ public class UpdateAccuracyConfiguration implements Configuration {
         this.tableName = tableName;
     }
 
-    public List<Map<String, String>> getAttributeValues() {
+    public List<List<KeyValue>> getAttributeValues() {
         return attributeValues;
     }
 
-    public void setAttributeValues(List<Map<String, String>> attributeValues) {
+    public void setAttributeValues(List<List<KeyValue>> attributeValues) {
         this.attributeValues = attributeValues;
     }
 
-    public List<Map<String, String>> getNewValues() {
+    public List<KeyValue> getNewValues() {
         return newValues;
     }
 
-    public void setNewValues(List<Map<String, String>> newValues) {
+    public void setNewValues(List<KeyValue> newValues) {
         this.newValues = newValues;
     }
 }

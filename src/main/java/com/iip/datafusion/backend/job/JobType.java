@@ -8,6 +8,7 @@ package com.iip.datafusion.backend.job;
 public enum JobType {
     CONSISTENCY("一致性检查"),
     ACCURACY("准确性检查"),
+    UPDATEACCURACY("准确性更新"),
     INTEGRITY("完整性检查"),
     JOIN("数据整合"),
     NAME_RECOGNITION("命名实体识别"),
