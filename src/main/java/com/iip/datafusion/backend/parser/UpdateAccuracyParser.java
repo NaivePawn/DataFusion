@@ -35,9 +35,7 @@ public class UpdateAccuracyParser implements Parser {
         for(int i=1;i<=sqlRsmd.getColumnCount();i++){
             columnType.put(sqlRsmd.getColumnName(i),sqlRsmd.getColumnTypeName(i));
         }
-
-        System.out.println(columnType);
-
+        //System.out.println(columnType);
 
         if (attributeValues == null || attributeValues.size() <= 0) {
             throw new Exception("传入记录不能为空");
@@ -52,7 +50,6 @@ public class UpdateAccuracyParser implements Parser {
             KeyValue newValue = newValues.get(i);
             String columnName = newValue.getKey().substring(4,newValue.getKey().length());
             String columnValue = newValue.getValue();
-
             List<KeyValue> attributeValue = attributeValues.get(i);
             for(int j = 0;j < attributeValue.size();j++){
                 if(attributeValue.get(j).getKey().equals(columnName)){
@@ -63,7 +60,6 @@ public class UpdateAccuracyParser implements Parser {
 
             String columnClause = "(";
             String valueClause = "(";
-
             for(int j = 0;j < attributeValue.size();j++){
                 String key = attributeValue.get(j).getKey();
                 String value = attributeValue.get(j).getValue();
